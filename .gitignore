@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/nssm_launcher
+/.vs
+/nssm_launcher/x64
+/x64
+/nssm_launcher.aps
+/nssm_launcher.vcxproj.filters
+/nssm_launcher.vcxproj.user
