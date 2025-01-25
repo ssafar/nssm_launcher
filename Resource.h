@@ -13,4 +13,5 @@
 #define IDC_NSSM_PATH                    105
 #define IDC_BROWSE_NSSM                  106
 #define IDC_SETTINGS                     107
+#define IDC_REFRESH                     108
 

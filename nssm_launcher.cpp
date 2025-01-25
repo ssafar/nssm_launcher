@@ -174,6 +174,21 @@ void PopulateList(HWND hList, const std::vector<ServiceInfo>& services) {
     }
 }
 
+void SetDefaultNSSMPath(const std::vector<ServiceInfo>& services) {
+    // Only set it if we don't have one already
+    std::optional<std::wstring> stored_default = settings::get_nssm_path();
+    if (stored_default.has_value()) {
+        return;
+    }
+
+    for (const ServiceInfo& service : services)
+    {
+        // Just pick the first one for now
+        settings::set_nssm_path(service.nssmPath);
+        break;
+    }
+}
+
 // Dialog procedure
 INT_PTR CALLBACK DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     static std::vector<ServiceInfo> services;
@@ -195,6 +210,9 @@ INT_PTR CALLBACK DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         // Get and show services
         services = GetNSSMServices();
         PopulateList(hList, services);
+
+        // If we don't have a path stored as settings, try using one from one of the services
+        SetDefaultNSSMPath(services);
         return TRUE;
     }
 
@@ -218,14 +236,22 @@ INT_PTR CALLBACK DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             }
 
             // Launch NSSM install
-            if (!LaunchNSSM(L"c:\\src\\nssm\\out\\Debug\\win32\\nssm.exe",
-                L"install", serviceName)) {
-                MessageBoxW(hwnd, L"Failed to launch NSSM.", L"Error", MB_OK | MB_ICONERROR);
+            std::optional<std::filesystem::path> nssm_path = settings::get_nssm_path();
+            if (!nssm_path.has_value()) {
+                MessageBoxW(hwnd, L"No nssm.exe found; you can set it in Settings",
+                    L"Error", MB_OK | MB_ICONERROR);
                 return TRUE;
             }
 
-            // Refresh list after a brief delay to allow NSSM to finish
-            Sleep(1000);
+            if (!LaunchNSSM(nssm_path.value().c_str(),
+                L"install", serviceName)) {
+                MessageBoxW(hwnd, L"Failed to launch NSSM.", L"Error", MB_OK | MB_ICONERROR);
+                return TRUE;
+            }           
+            return TRUE;
+        }
+
+        case IDC_REFRESH: {
             services = GetNSSMServices();
             PopulateList(hList, services);
             return TRUE;

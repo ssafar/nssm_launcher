@@ -109,6 +109,11 @@ namespace settings {
             return std::nullopt;
         }
 
+        // Check for emptiness
+        if (path[0] == L'\0') {
+            return std::nullopt;
+        }
+       
         return std::filesystem::path(path);
     }
 
