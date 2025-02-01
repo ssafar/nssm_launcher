@@ -1,7 +1,7 @@
 A launcher for NSSM the service manager
 =======================================
 
-[https://nssm.cc/](NSSM) is a really cool Windows utility. It lets you run processes as services even if they weren't originally designed to be able to do that.
+[NSSM](https://nssm.cc/) is a really cool Windows utility. It lets you run processes as services even if they weren't originally designed to be able to do that.
 
 Oddly enough though, although it provides a GUI to add / modify service settings, you still need to launch it from the command line. This project aims to help with this: it's a very simple launcher for NSSM, essentially calling `nssm install` and `nssm edit` for you.
 
