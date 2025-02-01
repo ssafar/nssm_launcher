@@ -16,7 +16,7 @@ env:
   BUILD_CONFIGURATION: Release
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -51,6 +51,6 @@ jobs:
       with:
         files: ${{ steps.filename.outputs.RELEASE_FILE }}
         name: Release ${{ github.ref_name }}
-        draft: true        
+        draft: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
