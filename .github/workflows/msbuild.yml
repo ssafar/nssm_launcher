@@ -44,7 +44,7 @@ jobs:
     # Copy and rename the executable
     - name: Prepare Release File
       run: |
-        Copy-Item .\x64\Release\lssm_launcher.exe "${{ steps.filename.outputs.RELEASE_FILE }}"
+        Copy-Item .\x64\Release\nssm_launcher.exe "${{ steps.filename.outputs.RELEASE_FILE }}"
     # Create the release
     - name: Create Release
       uses: softprops/action-gh-release@v1
