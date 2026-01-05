@@ -272,6 +272,21 @@ INT_PTR CALLBACK DialogProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             return TRUE;
         }
 
+        case IDC_REMOVE: {
+            int sel = ListView_GetNextItem(hList, -1, LVNI_SELECTED);
+            if (sel == -1) {
+                MessageBoxW(hwnd, L"Please select a service to remove.",
+                    L"Error", MB_OK | MB_ICONERROR);
+                return TRUE;
+            }
+
+            if (!LaunchNSSM(services[sel].nssmPath.c_str(), L"remove",
+                services[sel].name.c_str())) {
+                MessageBoxW(hwnd, L"Failed to launch NSSM.", L"Error", MB_OK | MB_ICONERROR);
+            }
+            return TRUE;
+        }
+
         case IDC_SETTINGS: {
             settings::show_dialog(hwnd);
             break;
