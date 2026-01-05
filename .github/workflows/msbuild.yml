@@ -36,6 +36,7 @@ jobs:
 
     # Get date and short SHA for filename
     - name: Set filename variables
+      if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
       id: filename
       run: |
         $date = Get-Date -Format "yyyyMMdd"
@@ -43,10 +44,12 @@ jobs:
         echo "RELEASE_FILE=nssm_launcher_${date}_${sha}.exe" >> $env:GITHUB_OUTPUT
     # Copy and rename the executable
     - name: Prepare Release File
+      if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
       run: |
         Copy-Item .\x64\Release\nssm_launcher.exe "${{ steps.filename.outputs.RELEASE_FILE }}"
     # Create the release
     - name: Create Release
+      if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
       uses: softprops/action-gh-release@v1
       with:
         files: ${{ steps.filename.outputs.RELEASE_FILE }}
