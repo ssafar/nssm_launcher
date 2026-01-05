@@ -15,3 +15,4 @@
 #define IDC_SETTINGS                     107
 #define IDC_REFRESH                     108
 
+#define IDC_REMOVE             109
